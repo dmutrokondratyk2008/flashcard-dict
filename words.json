@@ -1,0 +1,142 @@
+[
+  {
+    "id": 1,
+    "word": "apple",
+    "translation": "яблуко",
+    "example": "I eat a green apple every morning.",
+    "rating": 5
+  },
+  {
+    "id": 2,
+    "word": "developer",
+    "translation": "розробник",
+    "example": "He works as a Python developer.",
+    "rating": 0
+  },
+  {
+    "id": 3,
+    "word": "cat",
+    "translation": "кіт",
+    "example": "The cat is sleeping on the sofa.",
+    "rating": 5
+  },
+  {
+    "id": 4,
+    "word": "привіт",
+    "translation": "hello",
+    "example": "",
+    "rating": 2
+  },
+  {
+    "id": 5,
+    "word": "framework",
+    "translation": "каркас, фреймворк",
+    "example": "Django is a high-level Python web framework.",
+    "rating": 1
+  },
+  {
+    "id": 6,
+    "word": "database",
+    "translation": "база даних",
+    "example": "We store all user information in a secure database.",
+    "rating": 3
+  },
+  {
+    "id": 7,
+    "word": "book",
+    "translation": "книга",
+    "example": "",
+    "rating": 4
+  },
+  {
+    "id": 8,
+    "word": "resilience",
+    "translation": "стійкість, життєрадісність",
+    "example": "The team showed great resilience during the crisis.",
+    "rating": 0
+  },
+  {
+    "id": 9,
+    "word": "environment",
+    "translation": "середовище",
+    "example": "We must protect our natural environment.",
+    "rating": 2
+  },
+  {
+    "id": 10,
+    "word": "algorithm",
+    "translation": "алгоритм",
+    "example": "This sorting algorithm is very efficient.",
+    "rating": 4
+  },
+  {
+    "id": 11,
+    "word": "water",
+    "translation": "вода",
+    "example": "Drink plenty of water every day.",
+    "rating": 5
+  },
+  {
+    "id": 12,
+    "word": "variable",
+    "translation": "змінна",
+    "example": "Declare a global variable in your script.",
+    "rating": 1
+  },
+  {
+    "id": 13,
+    "word": "ambiguous",
+    "translation": "двозначний, неясний",
+    "example": "The instructions were ambiguous and confusing.",
+    "rating": 1
+  },
+  {
+    "id": 14,
+    "word": "mountain",
+    "translation": "гора",
+    "example": "They love hiking in the Carpathian mountains.",
+    "rating": 3
+  },
+  {
+    "id": 15,
+    "word": "function",
+    "translation": "функція",
+    "example": "This function returns a list of dictionaries.",
+    "rating": 4
+  },
+  {
+    "id": 16,
+    "word": "redundant",
+    "translation": "надлишковий",
+    "example": "Remove redundant code to optimize performance.",
+    "rating": 1
+  },
+  {
+    "id": 17,
+    "word": "coffee",
+    "translation": "кава",
+    "example": "I need a cup of hot coffee.",
+    "rating": 5
+  },
+  {
+    "id": 18,
+    "word": "ubiquitous",
+    "translation": "всюдисущий",
+    "example": "Smartphones have become ubiquitous in modern society.",
+    "rating": 0
+  },
+  {
+    "id": 19,
+    "word": "dictionary",
+    "translation": "словник",
+    "example": "",
+    "rating": 4
+  },
+  {
+    "id": 20,
+    "word": "exception",
+    "translation": "виняток",
+    "example": "Use try-except blocks to handle this exception.",
+    "rating": 3
+  }
+]
