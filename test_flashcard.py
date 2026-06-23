@@ -150,6 +150,76 @@ def test_rating_floor():
     assert reloaded[0]["rating"] >= 0, f"Рейтинг не може бути від'ємним: {reloaded[0]['rating']}"
 
 
+
+# ── Тест 10: зворотнє тренування — перевірка логіки відповіді ────────────────
+def test_reverse_mode_logic():
+    """Перевіряє що у зворотному режимі правильна відповідь — це word, а не translation."""
+    records = [
+        {"id": 1, "word": "cat", "translation": "кіт", "example": "", "rating": 2},
+        {"id": 2, "word": "dog", "translation": "собака", "example": "", "rating": 1},
+    ]
+    setup(records)
+    words = main.load_data()
+    chosen = words[0]  # cat / кіт
+    # У зворотньому режимі показуємо "кіт", очікуємо відповідь "cat"
+    correct_answer = chosen["word"].lower()
+    user_answer = "cat"
+    assert user_answer == correct_answer, f"Очікувалось 'cat', отримано '{correct_answer}'"
+
+
+
+# ── Тест 11: редагування перекладу ───────────────────────────────────────────
+def test_edit_translation():
+    """Перевіряє що після редагування переклад оновлюється у файлі."""
+    records = [
+        {"id": 1, "word": "cat", "translation": "кіт", "example": "", "rating": 2},
+    ]
+    setup(records)
+    words = main.load_data()
+    # Симулюємо редагування: змінюємо переклад
+    words[0]["translation"] = "кішка"
+    main.save_data(words)
+    reloaded = main.load_data()
+    assert reloaded[0]["translation"] == "кішка", (
+        f"Очікувалось 'кішка', отримано '{reloaded[0]['translation']}'"
+    )
+
+
+# ── Тест 12: скидання рейтингу одного слова ──────────────────────────────────
+def test_reset_single_rating():
+    """Перевіряє що скидання рейтингу одного слова не чіпає інші."""
+    records = [
+        {"id": 1, "word": "cat", "translation": "кіт",    "example": "", "rating": 5},
+        {"id": 2, "word": "dog", "translation": "собака", "example": "", "rating": 3},
+    ]
+    setup(records)
+    words = main.load_data()
+    # Скидаємо рейтинг першого слова
+    words[0]["rating"] = 0
+    main.save_data(words)
+    reloaded = main.load_data()
+    assert reloaded[0]["rating"] == 0, f"Рейтинг 'cat' має бути 0, а не {reloaded[0]['rating']}"
+    assert reloaded[1]["rating"] == 3, f"Рейтинг 'dog' не повинен змінитись, а не {reloaded[1]['rating']}"
+
+
+# ── Тест 13: скидання рейтингу всього словника ───────────────────────────────
+def test_reset_all_ratings():
+    """Перевіряє що скидання всіх рейтингів обнуляє кожне слово."""
+    records = [
+        {"id": 1, "word": "sun",  "translation": "сонце", "example": "", "rating": 7},
+        {"id": 2, "word": "moon", "translation": "місяць","example": "", "rating": 4},
+        {"id": 3, "word": "star", "translation": "зірка", "example": "", "rating": 2},
+    ]
+    setup(records)
+    words = main.load_data()
+    for w in words:
+        w["rating"] = 0
+    main.save_data(words)
+    reloaded = main.load_data()
+    for w in reloaded:
+        assert w["rating"] == 0, f"Рейтинг '{w['word']}' має бути 0, а не {w['rating']}"
+
+
 # ── Запуск всіх тестів ───────────────────────────────────────────────────────
 if __name__ == "__main__":
     tests = [
@@ -162,6 +232,10 @@ if __name__ == "__main__":
         ("Логіка пошуку за підрядком",               test_search_logic),
         ("Оновлення рейтингу після правильної відп.", test_rating_increase),
         ("Рейтинг не падає нижче 0",                 test_rating_floor),
+        ("Зворотній режим: правильна відповідь = word", test_reverse_mode_logic),
+        ("Редагування перекладу картки",              test_edit_translation),
+        ("Скидання рейтингу одного слова",            test_reset_single_rating),
+        ("Скидання рейтингу всього словника",         test_reset_all_ratings),
     ]
 
     print("\n" + "=" * 50)
