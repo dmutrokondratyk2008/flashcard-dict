@@ -18,7 +18,7 @@
     "word": "cat",
     "translation": "кіт",
     "example": "The cat is sleeping on the sofa.",
-    "rating": 6
+    "rating": 7
   },
   {
     "id": 4,
@@ -32,14 +32,14 @@
     "word": "framework",
     "translation": "каркас, фреймворк",
     "example": "Django is a high-level Python web framework.",
-    "rating": 1
+    "rating": 2
   },
   {
     "id": 6,
     "word": "database",
     "translation": "база даних",
     "example": "We store all user information in a secure database.",
-    "rating": 3
+    "rating": 4
   },
   {
     "id": 7,
@@ -53,7 +53,7 @@
     "word": "resilience",
     "translation": "стійкість, життєрадісність",
     "example": "The team showed great resilience during the crisis.",
-    "rating": 0
+    "rating": 1
   },
   {
     "id": 9,
@@ -95,7 +95,7 @@
     "word": "mountain",
     "translation": "гора",
     "example": "They love hiking in the Carpathian mountains.",
-    "rating": 3
+    "rating": 4
   },
   {
     "id": 15,
@@ -109,7 +109,7 @@
     "word": "redundant",
     "translation": "надлишковий",
     "example": "Remove redundant code to optimize performance.",
-    "rating": 1
+    "rating": 0
   },
   {
     "id": 17,
@@ -138,5 +138,40 @@
     "translation": "виняток",
     "example": "Use try-except blocks to handle this exception.",
     "rating": 3
+  },
+  {
+    "id": 21,
+    "word": "dog",
+    "translation": "собака",
+    "example": "My dog loves to run.",
+    "rating": 0
+  },
+  {
+    "id": 22,
+    "word": "house",
+    "translation": "будинок",
+    "example": "We live in a big house.",
+    "rating": 0
+  },
+  {
+    "id": 23,
+    "word": "sun",
+    "translation": "сонце",
+    "example": "The sun is shining today.",
+    "rating": 0
+  },
+  {
+    "id": 24,
+    "word": "moon",
+    "translation": "місяць",
+    "example": "The moon is full tonight.",
+    "rating": 0
+  },
+  {
+    "id": 25,
+    "word": "tree",
+    "translation": "дерево",
+    "example": "There is a big tree in the park.",
+    "rating": 0
   }
 ]

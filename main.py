@@ -110,6 +110,91 @@ def show_all():
     print_words(words)
 
 
+def import_from_file():
+    """Імпортує слова з текстового файлу.
+
+    Формат файлу — один рядок на слово:
+        слово - переклад
+        слово - переклад - приклад вживання
+    Рядки що починаються з # ігноруються (коментарі).
+    """
+    print()
+    print("  Формат файлу (один рядок = одне слово):")
+    print("    apple - яблуко")
+    print("    book - книга - I love reading books.")
+    print("    # це коментар, ігнорується")
+    print()
+
+    filepath = input("  Шлях до файлу: ").strip()
+    if not filepath:
+        print("  Помилка: введіть шлях до файлу.")
+        return
+
+    if not os.path.exists(filepath):
+        print(f"  Помилка: файл '{filepath}' не знайдено.")
+        return
+
+    try:
+        with open(filepath, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+    except Exception as e:
+        print(f"  Помилка читання файлу: {e}")
+        return
+
+    words = load_data()
+    existing = {w["word"].lower() for w in words}
+
+    added = 0
+    skipped = 0
+    errors = []
+
+    for i, line in enumerate(lines, 1):
+        line = line.strip()
+
+        # Пропускаємо порожні рядки і коментарі
+        if not line or line.startswith("#"):
+            continue
+
+        parts = [p.strip() for p in line.split("-", 2)]
+
+        if len(parts) < 2:
+            errors.append(f"  Рядок {i}: '{line}' — не вдалось розібрати")
+            continue
+
+        word = parts[0]
+        translation = parts[1]
+        example = parts[2] if len(parts) == 3 else ""
+
+        if not word or not translation:
+            errors.append(f"  Рядок {i}: порожнє слово або переклад")
+            continue
+
+        if word.lower() in existing:
+            skipped += 1
+            continue
+
+        words.append({
+            "id": next_id(words),
+            "word": word,
+            "translation": translation,
+            "example": example,
+            "rating": 0
+        })
+        existing.add(word.lower())
+        added += 1
+
+    if added > 0:
+        save_data(words)
+
+    print(f"\n  ─── Результат імпорту ───────────────────")
+    print(f"  Додано:   {added} слів")
+    print(f"  Пропущено (дублікати): {skipped}")
+    if errors:
+        print(f"  Помилок:  {len(errors)}")
+        for e in errors:
+            print(e)
+
+
 def edit_word():
     """Редагує переклад або приклад існуючої картки."""
     print()
@@ -151,7 +236,7 @@ def edit_word():
         words[idx]["translation"] = new_translation
 
     if choice in ("2", "3"):
-        new_example = input(f"  Новий приклад (Enter = залишити): ").strip()
+        new_example = input("  Новий приклад (Enter = залишити): ").strip()
         if new_example:
             words[idx]["example"] = new_example
 
@@ -278,7 +363,7 @@ def train():
         return
     print()
     try:
-        rounds_input = input(f"  Кількість раундів (Enter = 10): ").strip()
+        rounds_input = input("  Кількість раундів (Enter = 10): ").strip()
         rounds = int(rounds_input) if rounds_input else 10
         if rounds < 1:
             raise ValueError
@@ -296,7 +381,7 @@ def train_reverse():
         return
     print()
     try:
-        rounds_input = input(f"  Кількість раундів (Enter = 10): ").strip()
+        rounds_input = input("  Кількість раундів (Enter = 10): ").strip()
         rounds = int(rounds_input) if rounds_input else 10
         if rounds < 1:
             raise ValueError
@@ -389,7 +474,8 @@ def menu():
         "6": search_word,
         "7": edit_word,
         "8": reset_rating,
-        "9": delete_word,
+        "9": import_from_file,
+        "10": delete_word,
     }
 
     while True:
@@ -399,16 +485,17 @@ def menu():
         words = load_data()
         print(f"  Слів у словнику: {len(words)}")
         print()
-        print("  1. Додати слово")
-        print("  2. Переглянути словник")
-        print("  3. Тренування: слово → переклад")
-        print("  4. Тренування: переклад → слово")
-        print("  5. Статистика")
-        print("  6. Пошук слова")
-        print("  7. Редагувати картку")
-        print("  8. Скинути рейтинг")
-        print("  9. Видалити слово")
-        print("  0. Вийти")
+        print("  1.  Додати слово")
+        print("  2.  Переглянути словник")
+        print("  3.  Тренування: слово → переклад")
+        print("  4.  Тренування: переклад → слово")
+        print("  5.  Статистика")
+        print("  6.  Пошук слова")
+        print("  7.  Редагувати картку")
+        print("  8.  Скинути рейтинг")
+        print("  9.  Імпорт із файлу")
+        print("  10. Видалити слово")
+        print("  0.  Вийти")
 
         choice = input("\n  Ваш вибір: ").strip()
 
@@ -420,7 +507,7 @@ def menu():
         if action:
             action()
         else:
-            print("  Невідома команда. Введіть число від 0 до 9.")
+            print("  Невідома команда. Введіть число від 0 до 10.")
 
 
 if __name__ == "__main__":
