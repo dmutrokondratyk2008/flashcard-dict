@@ -1,0 +1,15 @@
+# Приклад файлу для імпорту слів
+# Формат: слово - переклад
+# Або:    слово - переклад - приклад вживання
+# Рядки що починаються з # ігноруються
+
+apple - яблуко - I eat an apple every day.
+book - книга - This book is very interesting.
+cat - кіт
+dog - собака - My dog loves to run.
+house - будинок - We live in a big house.
+water - вода - Drink more water every day.
+sun - сонце - The sun is shining today.
+moon - місяць - The moon is full tonight.
+tree - дерево - There is a big tree in the park.
+friend - друг - She is my best friend.

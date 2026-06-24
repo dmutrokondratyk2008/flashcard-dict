@@ -173,5 +173,12 @@
     "translation": "дерево",
     "example": "There is a big tree in the park.",
     "rating": 0
+  },
+  {
+    "id": 26,
+    "word": "friend",
+    "translation": "друг",
+    "example": "She is my best friend.",
+    "rating": 0
   }
 ]
