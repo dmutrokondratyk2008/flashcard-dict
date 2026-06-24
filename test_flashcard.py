@@ -220,6 +220,96 @@ def test_reset_all_ratings():
         assert w["rating"] == 0, f"Рейтинг '{w['word']}' має бути 0, а не {w['rating']}"
 
 
+
+# ── Тест 14: імпорт з файлу — базовий сценарій ───────────────────────────────
+def test_import_basic():
+    """Перевіряє що рядки формату 'слово - переклад' імпортуються коректно."""
+    import tempfile, os
+    setup([])
+
+    # Створюємо тимчасовий txt-файл
+    txt = "apple - яблуко - An apple a day.\nbook - книга\n# коментар\n\ncat - кіт\n"
+    tmp = "test_import_tmp.txt"
+    with open(tmp, "w", encoding="utf-8") as f:
+        f.write(txt)
+
+    try:
+        words = main.load_data()
+        existing = {w["word"].lower() for w in words}
+        added = 0
+        with open(tmp, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+        for line in lines:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            parts = [p.strip() for p in line.split("-", 2)]
+            if len(parts) < 2:
+                continue
+            word, translation = parts[0], parts[1]
+            example = parts[2] if len(parts) == 3 else ""
+            if word.lower() in existing:
+                continue
+            words.append({"id": main.next_id(words), "word": word,
+                          "translation": translation, "example": example, "rating": 0})
+            existing.add(word.lower())
+            added += 1
+        main.save_data(words)
+
+        assert added == 3, f"Очікувалось 3 слова, отримано {added}"
+        reloaded = main.load_data()
+        assert reloaded[0]["word"] == "apple"
+        assert reloaded[0]["example"] == "An apple a day."
+        assert reloaded[1]["example"] == ""
+    finally:
+        if os.path.exists(tmp):
+            os.remove(tmp)
+
+
+# ── Тест 15: імпорт — пропуск дублікатів ─────────────────────────────────────
+def test_import_skip_duplicates():
+    """Перевіряє що при імпорті слова-дублікати не додаються повторно."""
+    import tempfile, os
+    setup([{"id": 1, "word": "apple", "translation": "яблуко", "example": "", "rating": 3}])
+
+    tmp = "test_dup_tmp.txt"
+    with open(tmp, "w", encoding="utf-8") as f:
+        f.write("apple - яблуко\ndog - собака\n")
+
+    try:
+        words = main.load_data()
+        existing = {w["word"].lower() for w in words}
+        added = 0
+        skipped = 0
+        with open(tmp, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+        for line in lines:
+            line = line.strip()
+            if not line:
+                continue
+            parts = [p.strip() for p in line.split("-", 2)]
+            if len(parts) < 2:
+                continue
+            word = parts[0]
+            if word.lower() in existing:
+                skipped += 1
+                continue
+            words.append({"id": main.next_id(words), "word": word,
+                          "translation": parts[1], "example": "", "rating": 0})
+            existing.add(word.lower())
+            added += 1
+        main.save_data(words)
+
+        assert added == 1, f"Очікувалось 1 нове слово, додано {added}"
+        assert skipped == 1, f"Очікувався 1 пропуск, отримано {skipped}"
+        reloaded = main.load_data()
+        assert len(reloaded) == 2
+        assert reloaded[0]["rating"] == 3, "Рейтинг існуючого слова не повинен змінитись"
+    finally:
+        if os.path.exists(tmp):
+            os.remove(tmp)
+
+
 # ── Запуск всіх тестів ───────────────────────────────────────────────────────
 if __name__ == "__main__":
     tests = [
@@ -236,6 +326,8 @@ if __name__ == "__main__":
         ("Редагування перекладу картки",              test_edit_translation),
         ("Скидання рейтингу одного слова",            test_reset_single_rating),
         ("Скидання рейтингу всього словника",         test_reset_all_ratings),
+        ("Імпорт: базовий сценарій",                   test_import_basic),
+        ("Імпорт: пропуск дублікатів",                 test_import_skip_duplicates),
     ]
 
     print("\n" + "=" * 50)
